@@ -1,0 +1,28 @@
+{
+  "name": "whatsapp-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anonimatrix/whatsapp-openia.git"
+  },
+  "keywords": [],
+  "author": "Ezequiel Imaz <tavelliezequiel@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Anonimatrix/whatsapp-openia/issues"
+  },
+  "homepage": "https://github.com/Anonimatrix/whatsapp-openia#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "typescript": "^5.0.3"
+  }
+}
