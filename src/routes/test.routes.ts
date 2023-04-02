@@ -3,6 +3,6 @@ import testController from "../controllers/test.controller";
 
 const testRouter = Router();
 
-testRouter.get("/", testController.webhook);
+testRouter.get("/webhook", testController.webhook);
 
 export default testRouter;
