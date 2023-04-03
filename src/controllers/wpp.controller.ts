@@ -3,7 +3,6 @@ import { services } from "../config/services";
 import { ChatManager } from "../services/whatsapp/Items/ChatManager";
 import { commands } from "../services/commands/commands";
 
-const wppService = services.wpp;
 const chatManager = new ChatManager();
 
 const webhookVerification = async (req: Request, res: Response) => {
@@ -12,7 +11,7 @@ const webhookVerification = async (req: Request, res: Response) => {
     let token = String(req.query["hub.verify_token"] || "");
     let challenge = String(req.query["hub.challenge"] || "");
 
-    if(!wppService.verificateToken(mode, token))
+    if(!services.wpp.verificateToken(mode, token))
     {
         
         // Respond with '403 Forbidden' if verify tokens do not match
@@ -28,17 +27,17 @@ const webhook = async (req: Request, res: Response) => {
   
     if (object) {
       if (
-        wppService.isValidMessage(entry)
+        services.wpp.isValidMessage(entry)
       ) {
         // Parsing all information from the message
-        const {from, msg_body} = wppService.parseMessage(entry);
+        const {from, msg_body} = services.wpp.parseMessage(entry);
         
-        if(await wppService.isCommand(msg_body))
+        if(await services.wpp.isCommand(msg_body))
         {
-            const {commandName, args} = await wppService.getCommand(msg_body);
+            const {commandName, args} = await services.wpp.getCommand(msg_body);
 
             if(commands[commandName]) { 
-              commands[commandName](wppService, chatManager, from, args);
+              commands[commandName](services.wpp, chatManager, from, args);
             };
         }
 
@@ -51,7 +50,7 @@ const webhook = async (req: Request, res: Response) => {
           return res.send(200);
         }
 
-        await wppService.sendMessage(from, "Respuesta");
+        await services.wpp.sendMessage(from, "Respuesta");
       }
       res.sendStatus(200);
     } else {
