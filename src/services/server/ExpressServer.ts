@@ -1,6 +1,6 @@
 import express from 'express';
 import { ServerInterface } from './Interfaces/ServerInterface';
-import testRouter from '../../routes/test.routes';
+import wppRouter from '../../routes/wpp.routes';
 
 export class ExpressServer implements ServerInterface {
     private app: express.Application;
@@ -17,7 +17,7 @@ export class ExpressServer implements ServerInterface {
     }
 
     public routes() {
-        this.app.use('/test', testRouter);
+        this.app.use('/wpp', wppRouter);
     }
 
     public middleware() {
