@@ -1,4 +1,4 @@
-import { ChatManager } from "../whatsapp/Items/ChatManager";
+import { ChatManager } from "../whatsapp/LocalChat/ChatManager";
 import { WhatsappService } from "../whatsapp/WhatsappService";
 
 interface CommandsInterface {

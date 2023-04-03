@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { services } from "../config/services";
-import { ChatManager } from "../services/whatsapp/Items/ChatManager";
+import { ChatManager } from "../services/whatsapp/LocalChat/ChatManager";
 import { commands } from "../services/commands/commands";
 
 const chatManager = new ChatManager();

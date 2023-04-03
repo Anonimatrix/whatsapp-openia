@@ -1,6 +1,7 @@
 import { MessageInterface } from "../Interfaces/MessageInterface";
+import { ChatInterface } from "../Interfaces/ChatInterface";
 
-export class Chat {
+export class LocalChat implements ChatInterface{
     protected messages: MessageInterface[] = [];
 
     public getMessages(): MessageInterface[] {
