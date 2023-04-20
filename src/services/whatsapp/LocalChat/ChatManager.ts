@@ -1,4 +1,3 @@
-import { ChatInterface } from "../Interfaces/ChatInterface";
 import { ChatManagerInterface } from "../Interfaces/ChatManagerInterface";
 import { LocalChat } from "./Chat";
 

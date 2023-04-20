@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { services } from "../config/services";
 import { ChatManager } from "../services/whatsapp/LocalChat/ChatManager";
-import { commands } from "../services/commands/commands";
 
 const chatManager = new ChatManager();
 
@@ -32,12 +31,13 @@ const webhook = async (req: Request, res: Response) => {
         // Parsing all information from the message
         const {from, msg_body} = services.wpp.parseMessage(entry);
         
+        //Checking if the message is a command and executing it
         if(await services.wpp.isCommand(msg_body))
         {
-            const {commandName, args} = await services.wpp.getCommand(msg_body);
+            const {commandFunction, args} = await services.wpp.getCommand(msg_body);
 
-            if(commands[commandName]) { 
-              commands[commandName](services.wpp, chatManager, from, args);
+            if(commandFunction) { 
+              commandFunction(services.wpp, chatManager, from, args);
             };
         }
 
@@ -47,10 +47,15 @@ const webhook = async (req: Request, res: Response) => {
         // If the chat does not exist, return a 200
         if(!chat)
         {
-          return res.send(200);
+          return res.sendStatus(200);
         }
 
-        await services.wpp.sendMessage(from, "Respuesta");
+        try{
+          await services.wpp.sendMessage(from, "Respuesta");
+        } catch (e){
+          const msgError = e instanceof Error ? e.message : "Unknown error";
+          console.log("Error al enviar mensaje:", msgError);
+        }
       }
       res.sendStatus(200);
     } else {

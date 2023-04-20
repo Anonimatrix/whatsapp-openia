@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { commands } from "../commands/commands";
 
 export class WhatsappService {
-    public readonly commandPrefix: string = "@";
+    protected readonly commandPrefix: string = "@";
 
     verificateToken(mode: string, token: string): boolean {
         const verify_token = process.env.VERIFY_TOKEN;
@@ -17,7 +18,7 @@ export class WhatsappService {
     }
 
     isValidMessage(entry: any) {
-        return (entry &&
+        return Boolean(entry &&
             entry[0].changes &&
             entry[0].changes[0] &&
             entry[0].changes[0].value.messages &&
@@ -36,36 +37,49 @@ export class WhatsappService {
         }
     }
 
-    async isCommand(msg_body: string) {
+    isCommand(msg_body: string) {
         return msg_body.startsWith(this.commandPrefix);
     }
 
-    async getCommand(msg_body: string) {
+    getCommand(msg_body: string) {
         const command = msg_body.replace(this.commandPrefix, "");
         const [commandName, ...args] = command.split(" ");
+        const commandFunction = commands[commandName] || null;
 
         return {
             commandName,
+            commandFunction,
             args
         }
     }
 
     async sendMessage(phone: string, message: string) {
-        return await axios.post(`https://graph.facebook.com/v16.0/107795065612594/messages`, { 
-            messaging_product: "whatsapp", 
-            to: phone, 
-            type: "text",
-            text: {
-                "preview_url": true,
-                "body": message
-            }
-        },
-        {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `Bearer ${process.env.WHATSAPP_TOKEN}`
-            }
-        } 
-        );
+        try{
+            return await axios.post(`https://graph.facebook.com/v16.0/107795065612594/messages`, { 
+                messaging_product: "whatsapp", 
+                to: phone, 
+                type: "text",
+                text: {
+                    "preview_url": true,
+                    "body": message
+                }
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${process.env.WHATSAPP_TOKEN}`
+                }
+            } 
+            );
+        } catch (e) {
+            const msgError = e instanceof AxiosError ? e.response?.data : 
+               e instanceof Error ? e.message : "Unknown error";
+
+            throw new Error(msgError);
+        }
+    }
+
+    getCommandPrefix() {
+        return this.commandPrefix;
     }
 }
