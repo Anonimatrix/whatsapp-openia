@@ -30,7 +30,10 @@ export class WhatsappService {
     parseMessage(entry: any) {
         const phone_number_id =
             entry[0].changes[0].value.metadata.phone_number_id;
-        const from = entry[0].changes[0].value.messages[0].from;
+        const from = entry[0].changes[0].value.messages[0].from.replace(
+            "549",
+            "54"
+        );
         const msg_body = entry[0].changes[0].value.messages[0].text.body;
 
         return {

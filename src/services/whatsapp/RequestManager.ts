@@ -24,7 +24,7 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         //Adding message and setting the timeout to remove chat if the timeout is reached
-        chat.addMessage(msg_body, async () => {
+        chat.addMessage({ body: msg_body }, async () => {
             await services.wpp.sendMessage(from, config.timeoutMessage);
             services.chatManager.removeChat(from);
         });

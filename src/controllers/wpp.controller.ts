@@ -28,7 +28,7 @@ const webhook = async (req: Request, res: Response) => {
 
         return res.sendStatus(status);
     } catch (e) {
-        console.log(e);
+        console.log(e instanceof Error ? e.message : "Unknown Error");
         return res.sendStatus(500);
     }
 };
