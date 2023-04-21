@@ -59,7 +59,7 @@ export class WhatsappService {
     async sendMessage(phone: string, message: string) {
         try {
             return await axios.post(
-                `https://graph.facebook.com/v16.0/107795065612594/messages`,
+                `https://graph.facebook.com/v16.0/${process.env.PHONE_ID}/messages`,
                 {
                     messaging_product: "whatsapp",
                     to: phone,
