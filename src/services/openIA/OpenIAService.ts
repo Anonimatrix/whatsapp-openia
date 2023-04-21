@@ -1,6 +1,6 @@
 import { ResponseManagerInterface } from "../whatsapp/Interfaces/ResponseManager";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
-import { configuration } from "../../config/openia";
+import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
+import { configuration, options } from "../../config/openia";
 
 export class OpenIAService implements ResponseManagerInterface {
     service: OpenAIApi;
@@ -21,14 +21,20 @@ export class OpenIAService implements ResponseManagerInterface {
             (message) =>
                 ({
                     content: message,
-                    role: "user",
-                } as ChatCompletionRequestMessage)
+                    role: ChatCompletionRequestMessageRoleEnum.User,
+                })
         );
+
+        // Adding the language chat
+        const languageMessage = {
+            content: `Lenguaje predeterminado a menos que se especifique otro: ${options.language}`,
+            role: ChatCompletionRequestMessageRoleEnum.System, 
+        };
 
         const res = await this.service.createChatCompletion({
             model: "gpt-3.5-turbo",
             ...configuration,
-            messages: parsedMessages,
+            messages: [languageMessage, ...parsedMessages],
         });
 
         const response = res.data.choices[0].message?.content;

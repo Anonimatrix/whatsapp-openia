@@ -10,9 +10,9 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // Parsing all information from the message
-        const { from, msg_body, media_base64 } = await services.wpp.parseMessage(entry);
+        const { from, msg_body, media_id } = await services.wpp.parseMessage(entry);
 
-        if(!msg_body && !media_base64) {
+        if(!msg_body && !media_id) {
             return 400;
         }
 
@@ -28,10 +28,7 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // If the message is a media base64, add in the message body
-        const parsedMessage = 
-            media_base64 ? 
-                'A continuacion la imagen en base64: ' +  media_base64 + ' || ' + msg_body 
-                : msg_body;
+        const parsedMessage = services.wpp.parseMessageWithMedia(msg_body, media_id);
 
         //Adding message and setting the timeout to remove chat if the timeout is reached
         chat.addMessage({ body: parsedMessage }, async () => {

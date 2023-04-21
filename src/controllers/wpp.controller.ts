@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { services } from "../config/services";
+import { Readable } from "stream";
 
 const webhookVerification = async (req: Request, res: Response) => {
     // Parse params from the webhook verification request
@@ -33,7 +34,20 @@ const webhook = async (req: Request, res: Response) => {
     }
 };
 
+const viewMedia = async (req: Request, res: Response) => {
+    const { media_id } = req.params;
+
+    if (!media_id) {
+        return res.sendStatus(404);
+    }
+
+    const buffer = await services.wpp.getMedia(media_id);
+
+    return Readable.from(buffer).pipe(res);
+};
+
 export default {
     webhookVerification,
     webhook,
+    viewMedia
 };

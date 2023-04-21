@@ -42,15 +42,13 @@ export class WhatsappService {
 
         const image_id = message.image?.id || "";
 
-        const media_link = image_id ? await this.getMediaUrl(image_id) : "";
-
-        const media_base64 = media_link ? await this.getMediaBase64FromUrl(media_link) : "";
+        const media_id = image_id;
 
         return {
             phone_number_id,
             from,
             msg_body,
-            media_base64
+            media_id
         };
     }
 
@@ -85,8 +83,18 @@ export class WhatsappService {
 
         return media_link;
     }
+
+    parseMessageWithMedia(msg_body: string, media_id?: string) {
+        const mediaUrl = String(process.env.BASE_URL) + `/media/${String(media_id)}`;
+        const parsedMessage = 
+            media_id ? 
+                'A continuacion el link de la imagen: ' + mediaUrl  + ' || ' + msg_body 
+                : msg_body;
+                
+        return parsedMessage;
+    }
     
-    async getMediaBase64FromUrl(media_url: string) {
+    async getMedia(media_url: string) {
         const res = await axios.get(
             media_url,
             {
@@ -98,10 +106,7 @@ export class WhatsappService {
             }
         );
 
-        const buffer = Buffer.from(res.data, 'binary');
-        const media = buffer.toString('base64');
-
-        return media;
+        return Buffer.from(res.data, 'binary');
     }
 
     async sendMessage(phone: string, message: string) {
