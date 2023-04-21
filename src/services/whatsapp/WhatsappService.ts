@@ -83,16 +83,6 @@ export class WhatsappService {
 
         return media_link;
     }
-
-    parseMessageWithMedia(msg_body: string, media_id?: string) {
-        const mediaUrl = String(process.env.BASE_URL) + `/media/${String(media_id)}`;
-        const parsedMessage = 
-            media_id ? 
-                'A continuacion el link de la imagen: ' + mediaUrl  + ' || ' + msg_body 
-                : msg_body;
-                
-        return parsedMessage;
-    }
     
     async getMedia(media_url: string) {
         const res = await axios.get(

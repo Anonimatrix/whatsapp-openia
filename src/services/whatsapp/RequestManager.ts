@@ -27,8 +27,8 @@ export class RequestManager implements RequestManagerInterface {
             return 400;
         }
 
-        // If the message is a media base64, add in the message body
-        const parsedMessage = services.wpp.parseMessageWithMedia(msg_body, media_id);
+        // If the message is a media, add in the message body
+        const parsedMessage = this.createMessageWithMediaViewer(msg_body, media_id);
 
         //Adding message and setting the timeout to remove chat if the timeout is reached
         chat.addMessage({ body: parsedMessage }, async () => {
@@ -70,5 +70,15 @@ export class RequestManager implements RequestManagerInterface {
                 commandFunction(services.wpp, services.chatManager, from, args);
             }
         }
+    }
+
+    createMessageWithMediaViewer(msg_body: string, media_id?: string) {
+        const mediaUrl = String(process.env.BASE_WPP_MEDIA_URL) + `/${String(media_id)}`;
+        const parsedMessage = 
+            media_id ? 
+                'El siguiente enlace tiene una imagen: ' + mediaUrl  + ' || ' + msg_body 
+                : msg_body;
+
+        return parsedMessage;
     }
 }

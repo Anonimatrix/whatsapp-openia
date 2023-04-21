@@ -41,7 +41,8 @@ const viewMedia = async (req: Request, res: Response) => {
         return res.sendStatus(404);
     }
 
-    const buffer = await services.wpp.getMedia(media_id);
+    const mediaUrl = await services.wpp.getMediaUrl(media_id);
+    const buffer = await services.wpp.getMedia(mediaUrl);
 
     return Readable.from(buffer).pipe(res);
 };
