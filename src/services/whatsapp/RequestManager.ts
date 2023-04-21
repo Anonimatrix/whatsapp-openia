@@ -28,8 +28,9 @@ export class RequestManager implements RequestManagerInterface {
             await services.wpp.sendMessage(from, config.timeoutMessage);
             services.chatManager.removeChat(from);
         });
-        // Getting all messages
-        const messages = chat.getMessages().map((message) => message.body);
+        // Getting all messages parsed and filtered from the chat
+        const messages = chat.getMessages().map((message) => message.body)
+            .filter((message) => !services.wpp.isCommand(message));
 
         try {
             // Getting the response from the message
@@ -52,8 +53,8 @@ export class RequestManager implements RequestManagerInterface {
      * @param msg_body Message body
      */
     async manageCommand(from: string, msg_body: string) {
-        if (await services.wpp.isCommand(msg_body)) {
-            const { commandFunction, args } = await services.wpp.getCommand(
+        if (services.wpp.isCommand(msg_body)) {
+            const { commandFunction, args } = services.wpp.getCommand(
                 msg_body
             );
 
