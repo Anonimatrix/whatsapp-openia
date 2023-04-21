@@ -79,7 +79,7 @@ export class WhatsappService {
         } catch (e) {
             const msgError =
                 e instanceof AxiosError
-                    ? e.response?.data
+                    ? e.response?.data?.error.message
                     : e instanceof Error
                     ? e.message
                     : "Unknown error";
