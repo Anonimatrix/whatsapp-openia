@@ -1,6 +1,6 @@
+import { ResponseManagerInterface } from "../whatsapp/Interfaces/ResponseManager";
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import { configuration } from "../../config/openia";
-import { ResponseManagerInterface } from "../whatsapp/interfaces/ResponseManager";
 
 export class OpenIAService implements ResponseManagerInterface {
     service: OpenAIApi;

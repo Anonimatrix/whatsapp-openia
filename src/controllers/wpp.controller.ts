@@ -4,7 +4,7 @@ import { services } from "../config/services";
 const webhookVerification = async (req: Request, res: Response) => {
     // Parse params from the webhook verification request
     let mode = String(req.query["hub.mode"] || "");
-    let token = String(req.query["hub.verify_token"] || "");
+    let token = String(req.query["hub.WHATSAPP_VERIFY_TOKEN"] || "");
     let challenge = String(req.query["hub.challenge"] || "");
 
     if (!services.wpp.verificateToken(mode, token)) {

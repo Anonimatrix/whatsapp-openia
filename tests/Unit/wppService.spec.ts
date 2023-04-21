@@ -22,7 +22,7 @@ describe("WhatsApp Service", () => {
         expect(parsedMessage).toEqual({
             phone_number_id: changeValue.metadata.phone_number_id,
             from: message.from,
-            msg_body: message.text.body
+            msg_body: message.text.body,
         });
     });
 
@@ -39,13 +39,13 @@ describe("WhatsApp Service", () => {
     });
 
     it("validateToken should return true if is valid", () => {
-        process.env.VERIFY_TOKEN = "token";
+        process.env.WHATSAPP_VERIFY_TOKEN = "token";
         const isValid = wppService.verificateToken("subscribe", "token");
         expect(isValid).toBeTruthy();
     });
 
     it("validateToken should return false if is invalid", () => {
-        process.env.VERIFY_TOKEN = "token";
+        process.env.WHATSAPP_VERIFY_TOKEN = "token";
         const isValid = wppService.verificateToken("subscribe", "1234");
         expect(isValid).toBeFalsy();
     });
@@ -56,7 +56,7 @@ describe("WhatsApp Service", () => {
         expect(commandObject).toEqual({
             commandName: "init",
             commandFunction: commands.init,
-            args: []
+            args: [],
         });
     });
 
@@ -66,7 +66,7 @@ describe("WhatsApp Service", () => {
         expect(commandObject).toEqual({
             commandName: "init",
             commandFunction: commands.init,
-            args: ["arg1", "arg2"]
+            args: ["arg1", "arg2"],
         });
     });
 
@@ -76,7 +76,7 @@ describe("WhatsApp Service", () => {
         expect(commandObject).toEqual({
             commandName: "invalid",
             commandFunction: null,
-            args: []
+            args: [],
         });
     });
 });
