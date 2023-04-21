@@ -1,8 +1,6 @@
 import { config } from "dotenv";
 config();
 import { OpenIAService } from "../../../src/services/openIA/OpenIAService";
-import fs from "fs";
-import {join} from "path";
 
 describe("Test chatGptService", () => {
     const service = new OpenIAService(String(process.env.OPENAI_KEY || ""));
