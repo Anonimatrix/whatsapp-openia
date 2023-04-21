@@ -40,7 +40,7 @@ export class WhatsappService {
 
         const msg_body = entry[0].changes[0].value.messages[0].text?.body || "";
 
-        const media_link = message.image?.link || message.video?.link || message.audio?.link || message.document?.link || "";
+        const media_link = message.image?.link || "";
 
         return {
             phone_number_id,

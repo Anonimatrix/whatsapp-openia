@@ -1,5 +1,6 @@
 import { config } from "../../config/chats";
 import { services } from "../../config/services";
+import { FileManagerService } from "../file-manager/FileManagerService";
 import { RequestManagerInterface } from "./Interfaces/RequestManager";
 
 export class RequestManager implements RequestManagerInterface {
@@ -28,7 +29,9 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // If the message is a media link, add in the message body the link
-        const parsedMessage = media_link ? 'A continuacion el link de un documento media: ' +  media_link + '. ' + msg_body : msg_body;
+        const parsedMessage = 
+            media_link ? 'A continuacion la imagen en base64: ' +  
+            FileManagerService.linkToBase64(media_link) + ' || ' + msg_body : msg_body;
 
         //Adding message and setting the timeout to remove chat if the timeout is reached
         chat.addMessage({ body: parsedMessage }, async () => {
