@@ -36,9 +36,11 @@ export class WhatsappService {
             "54"
         );
 
+        const message = entry[0].changes[0].value.messages[0];
+
         const msg_body = entry[0].changes[0].value.messages[0].text?.body || "";
 
-        const media_link = entry[0].changes[0].value.messages[0].media?.link || "";
+        const media_link = message.image?.link || message.video?.link || message.audio?.link || message.document?.link || "";
 
         return {
             phone_number_id,
