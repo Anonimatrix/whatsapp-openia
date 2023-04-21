@@ -23,7 +23,14 @@ const webhook = async (req: Request, res: Response) => {
         return res.sendStatus(404);
     }
 
-    return await services.requestManager.manage(entry);
+    try {
+        const status = await services.requestManager.manage(entry);
+
+        return res.sendStatus(status);
+    } catch (e) {
+        console.log(e);
+        return res.sendStatus(500);
+    }
 };
 
 export default {
