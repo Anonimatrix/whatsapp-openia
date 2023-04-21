@@ -28,7 +28,7 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // If the message is a media link, add in the message body the link
-        const parsedMessage = media_link ? 'A continuacion el link de una documento media: ' +  media_link + '. ' + msg_body : msg_body;
+        const parsedMessage = media_link ? 'A continuacion el link de un documento media: ' +  media_link + '. ' + msg_body : msg_body;
 
         //Adding message and setting the timeout to remove chat if the timeout is reached
         chat.addMessage({ body: parsedMessage }, async () => {
