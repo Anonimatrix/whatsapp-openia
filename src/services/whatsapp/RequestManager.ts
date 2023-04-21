@@ -1,6 +1,5 @@
 import { config } from "../../config/chats";
 import { services } from "../../config/services";
-import { FileManagerService } from "../file-manager/FileManagerService";
 import { RequestManagerInterface } from "./Interfaces/RequestManager";
 
 export class RequestManager implements RequestManagerInterface {
@@ -11,9 +10,9 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // Parsing all information from the message
-        const { from, msg_body, media_link } = await services.wpp.parseMessage(entry);
+        const { from, msg_body, media_base64 } = await services.wpp.parseMessage(entry);
 
-        if(!msg_body && !media_link) {
+        if(!msg_body && !media_base64) {
             return 400;
         }
 
@@ -28,10 +27,11 @@ export class RequestManager implements RequestManagerInterface {
             return 400;
         }
 
-        // If the message is a media link, add in the message body the link
+        // If the message is a media base64, add in the message body
         const parsedMessage = 
-            media_link ? 'A continuacion la imagen en base64: ' +  
-            FileManagerService.linkToBase64(media_link) + ' || ' + msg_body : msg_body;
+            media_base64 ? 
+                'A continuacion la imagen en base64: ' +  media_base64 + ' || ' + msg_body 
+                : msg_body;
 
         //Adding message and setting the timeout to remove chat if the timeout is reached
         chat.addMessage({ body: parsedMessage }, async () => {

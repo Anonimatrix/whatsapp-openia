@@ -44,11 +44,13 @@ export class WhatsappService {
 
         const media_link = image_id ? await this.getMediaUrl(image_id) : "";
 
+        const media_base64 = media_link ? await this.getMediaBase64FromUrl(media_link) : "";
+
         return {
             phone_number_id,
             from,
             msg_body,
-            media_link
+            media_base64
         };
     }
 
@@ -70,7 +72,7 @@ export class WhatsappService {
 
     async getMediaUrl(media_id: string) {
         const res = await axios.get(
-            `https://graph.facebook.com/v16.0/${media_id}/messages`,
+            `https://graph.facebook.com/v16.0/${media_id}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +85,24 @@ export class WhatsappService {
 
         return media_link;
     }
-        
+    
+    async getMediaBase64FromUrl(media_url: string) {
+        const res = await axios.get(
+            media_url,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+                },
+                responseType: 'arraybuffer'
+            }
+        );
+
+        const buffer = Buffer.from(res.data, 'binary');
+        const media = buffer.toString('base64');
+
+        return media;
+    }
 
     async sendMessage(phone: string, message: string) {
         try {
