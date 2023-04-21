@@ -8,7 +8,7 @@ interface ChatsInterface {
 export class ChatManager implements ChatManagerInterface {
     protected chats: ChatsInterface = {};
 
-    public getChatByNumber(phone: string): LocalChat|undefined {
+    public getChatByNumber(phone: string): LocalChat | undefined {
         return this.chats[phone];
     }
 
