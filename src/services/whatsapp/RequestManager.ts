@@ -11,7 +11,7 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // Parsing all information from the message
-        const { from, msg_body, media_link } = services.wpp.parseMessage(entry);
+        const { from, msg_body, media_link } = await services.wpp.parseMessage(entry);
 
         if(!msg_body && !media_link) {
             return 400;
