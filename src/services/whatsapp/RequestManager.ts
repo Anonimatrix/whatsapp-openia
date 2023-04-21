@@ -10,7 +10,11 @@ export class RequestManager implements RequestManagerInterface {
         }
 
         // Parsing all information from the message
-        const { from, msg_body } = services.wpp.parseMessage(entry);
+        const { from, msg_body, media_link } = services.wpp.parseMessage(entry);
+
+        if(!msg_body && !media_link) {
+            return 400;
+        }
 
         //Checking if the message is a command and executing it
         await this.manageCommand(from, msg_body);
@@ -23,11 +27,15 @@ export class RequestManager implements RequestManagerInterface {
             return 400;
         }
 
+        // If the message is a media link, add in the message body the link
+        const parsedMessage = media_link ? 'A continuacion el link de una documento media: ' +  media_link + '. ' + msg_body : msg_body;
+
         //Adding message and setting the timeout to remove chat if the timeout is reached
-        chat.addMessage({ body: msg_body }, async () => {
+        chat.addMessage({ body: parsedMessage }, async () => {
             await services.wpp.sendMessage(from, config.timeoutMessage);
             services.chatManager.removeChat(from);
         });
+
         // Getting all messages parsed and filtered from the chat
         const messages = chat.getMessages().map((message) => message.body)
             .filter((message) => !services.wpp.isCommand(message));
