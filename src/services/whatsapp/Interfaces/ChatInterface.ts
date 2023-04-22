@@ -6,4 +6,6 @@ export interface ChatInterface {
     addMessage(message: MessageInterface, timeoutCallback?: () => {}): void;
 
     getLastMessage(): MessageInterface | undefined;
+
+    clearTimeoutChat(): void;
 }

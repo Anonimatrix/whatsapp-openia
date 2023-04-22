@@ -27,9 +27,13 @@ export class LocalChat implements ChatInterface {
      * @param timeoutCallback Callback to be executed when the timeout is reached
      */
     public setTimeoutChat(timeoutCallback: () => {}): void {
-        if (this.timeoutChat) clearTimeout(this.timeoutChat);
+        this.clearTimeoutChat();
         this.timeoutChat = setTimeout(() => {
             timeoutCallback();
         }, config.timeoutChat);
+    }
+
+    public clearTimeoutChat(): void {
+        if (this.timeoutChat) clearTimeout(this.timeoutChat);
     }
 }

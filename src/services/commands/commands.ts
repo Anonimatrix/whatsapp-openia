@@ -29,8 +29,10 @@ export const commands: CommandsInterface = {
         from: string
     ) => {
         wppService.sendMessage(from, "Conversacion finalizada");
-        return (
-            chatManager.getChatByNumber(from) && chatManager.removeChat(from)
-        );
+        const chat = chatManager.getChatByNumber(from);
+        if (chat) {
+            chat.clearTimeoutChat();
+            chatManager.removeChat(from);
+        }
     },
 };
