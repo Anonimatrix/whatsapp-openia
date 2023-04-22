@@ -1,5 +1,5 @@
 import { ResponseManagerInterface } from "../whatsapp/Interfaces/ResponseManager";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
 import { configuration } from "../../config/openia";
 
 export class OpenIAService implements ResponseManagerInterface {
@@ -21,8 +21,8 @@ export class OpenIAService implements ResponseManagerInterface {
             (message) =>
                 ({
                     content: message,
-                    role: "user",
-                } as ChatCompletionRequestMessage)
+                    role: ChatCompletionRequestMessageRoleEnum.User,
+                })
         );
 
         const res = await this.service.createChatCompletion({

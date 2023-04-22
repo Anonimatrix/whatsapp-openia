@@ -3,7 +3,7 @@ import { ServerInterface } from "../services/server/Interfaces/ServerInterface";
 import { ChatManager } from "../services/whatsapp/LocalChat/ChatManager";
 import { ChatManagerInterface } from "../services/whatsapp/Interfaces/ChatManagerInterface";
 import { WhatsappService } from "../services/whatsapp/WhatsappService";
-import { OpenIAService } from "../services/openIA/OpenIAService";
+import { OpenIAService } from "../services/openia/OpenIAService";
 import { RequestManager } from "../services/whatsapp/RequestManager";
 import { RequestManagerInterface } from "../services/whatsapp/Interfaces/RequestManager";
 import { ResponseManagerInterface } from "../services/whatsapp/Interfaces/ResponseManager";

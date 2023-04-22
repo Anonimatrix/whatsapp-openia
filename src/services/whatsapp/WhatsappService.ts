@@ -27,19 +27,28 @@ export class WhatsappService {
         );
     }
 
-    parseMessage(entry: any) {
-        const phone_number_id =
-            entry[0].changes[0].value.metadata.phone_number_id;
-        const from = entry[0].changes[0].value.messages[0].from.replace(
+    async parseMessage(entry: any) {
+
+        const change = entry[0].changes[0].value;
+        const phone_number_id = change.metadata.phone_number_id;
+        const message = change.messages[0];
+
+        const from = message.from.replace(
             "549",
             "54"
         );
-        const msg_body = entry[0].changes[0].value.messages[0].text.body;
+
+        const msg_body = message.text?.body || "";
+
+        const image_id = message.image?.id || "";
+
+        const media_id = image_id;
 
         return {
             phone_number_id,
             from,
             msg_body,
+            media_id
         };
     }
 
@@ -57,6 +66,37 @@ export class WhatsappService {
             commandFunction,
             args,
         };
+    }
+
+    async getMediaUrl(media_id: string) {
+        const res = await axios.get(
+            `https://graph.facebook.com/v16.0/${media_id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+                },
+            }
+        );
+
+        const media_link = res.data.url;
+
+        return media_link;
+    }
+    
+    async getMedia(media_url: string) {
+        const res = await axios.get(
+            media_url,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
+                },
+                responseType: 'arraybuffer'
+            }
+        );
+
+        return Buffer.from(res.data, 'binary');
     }
 
     async sendMessage(phone: string, message: string) {
